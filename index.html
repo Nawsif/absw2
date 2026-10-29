@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Angry Birds Star Wars II</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:#fff;font:16px system-ui}
+#game{position:fixed;inset:0;display:grid;place-items:center;background:#000}
+#canvas{display:block;width:min(100vw,177.777778vh);height:min(100vh,56.25vw);outline:0;touch-action:none}
+#status{position:fixed;inset:0;z-index:2;display:grid;place-items:center;background:#101318;text-align:center;padding:24px}
+#status[hidden],#spinner{display:none}
+#fullscreen{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:3;width:38px;height:38px;display:grid;place-items:center;border:1px solid #ffffff50;border-radius:8px;background:#0008;color:white;cursor:pointer;opacity:.55}
+#fullscreen:hover,#fullscreen:focus-visible{opacity:1}
+#fullscreen svg{width:22px;height:22px;pointer-events:none}
+#game:fullscreen #fullscreen,#fullscreen[hidden]{display:none}
+#audit-status{position:fixed;top:0;left:0;right:0;z-index:5}
+</style>
+</head>
+<body>
+<div id="game">
+<canvas id="canvas" width="1280" height="720" tabindex="0" aria-label="Angry Birds Star Wars II"></canvas>
+<div id="status" role="status">Loading game…</div>
+<button id="fullscreen" type="button" aria-label="Enter fullscreen" title="Fullscreen">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg>
+</button>
+</div>
+<script>
+(() => {
+  const game = document.getElementById('game');
+  const canvas = document.getElementById('canvas');
+  const button = document.getElementById('fullscreen');
+  button.addEventListener('click', async () => {
+    try {
+      if (game.requestFullscreen) await game.requestFullscreen();
+      else if (game.webkitRequestFullscreen) game.webkitRequestFullscreen();
+    } catch (error) { console.warn('Fullscreen unavailable', error); }
+    canvas.focus();
+  });
+  if (!game.requestFullscreen && !game.webkitRequestFullscreen) button.hidden = true;
+})();
+</script>
+<script src="player.js?g=game.love&amp;n=1&amp;ui=fullscreen-1"></script>
+</body>
+</html>
